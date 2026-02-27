@@ -1,3 +1,5 @@
+local packer_bootstrap = require 'bootstrap' ()
+
 -- plugins
 require "packer" .startup(function(use)
   use "wbthomason/packer.nvim"
@@ -48,6 +50,9 @@ require "packer" .startup(function(use)
       hide_numbers = false,
     }
   end}
+
+  -- automatically sync configuration on install
+  if packer_bootstrap then require('packer').sync() end
 end)
 
 -- settings
