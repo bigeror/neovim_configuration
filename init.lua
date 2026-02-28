@@ -1,24 +1,25 @@
 local packer_bootstrap = require 'bootstrap' ()
 
 -- plugins
-require "packer" .startup(function(use)
-  use "wbthomason/packer.nvim"
-  use "nvim-telescope/telescope.nvim"
-  use "nvim-lua/plenary.nvim"
-  use "tpope/vim-sleuth"
+require 'packer' .startup(function(use)
+  use 'wbthomason/packer.nvim'
+  use 'nvim-telescope/telescope.nvim'
+  use 'nvim-lua/plenary.nvim'
+  use 'tpope/vim-sleuth'
   use 'nvim-tree/nvim-web-devicons'
   use 'theprimeagen/harpoon'
+  use 'NStefan002/screenkey.nvim'
 
   -- colorscheme
-  use "folke/tokyonight.nvim"
+  use 'folke/tokyonight.nvim'
   local tokyonight = require 'tokyonight'
   tokyonight.setup {
     on_colors = function () end,
     on_highlights = function () end,
     transparent = true,
     styles = {
-      sidebars = "transparent",
-      floats = "transparent",
+      sidebars = 'transparent',
+      floats = 'transparent',
     },
   }
   tokyonight.load()
@@ -43,8 +44,8 @@ require "packer" .startup(function(use)
 
   require 'lsp' .LSP(use)
 
-  use {"akinsho/toggleterm.nvim", tag = '*', config = function()
-    require "toggleterm" .setup {
+  use {'akinsho/toggleterm.nvim', tag = '*', config = function()
+    require 'toggleterm' .setup {
       open_mapping = '<C-\'>',
       direction = 'float',
       start_in_insert = true,
@@ -53,8 +54,8 @@ require "packer" .startup(function(use)
     }
   end}
 
-  use "rachartier/tiny-inline-diagnostic.nvim"
-  require("tiny-inline-diagnostic").setup {
+  use 'rachartier/tiny-inline-diagnostic.nvim'
+  require('tiny-inline-diagnostic').setup {
     options = {
       add_messages = { display_count = true, },
       multilines = { enabled = true, },
@@ -68,7 +69,7 @@ end)
 
 -- settings
 vim.g.mapleader = ' '
-vim.cmd "set nowrap"
+vim.cmd 'set nowrap'
 vim.o.clipboard = 'unnamedplus'
 vim.o.relativenumber = true
 vim.o.signcolumn = 'yes'
@@ -79,9 +80,12 @@ vim.o.mouse = 'a'
 local telbuiltin = require 'telescope.builtin'
 vim.keymap.set('n', '<leader><leader>', telbuiltin.find_files)
 vim.keymap.set('n', '<leader>s', function() telbuiltin
-  .grep_string({ search =  vim.fn.input("Grep > ") }) end)
+  .grep_string({ search =  vim.fn.input('Grep > ') }) end)
 vim.keymap.set('n', '<leader>q', function () MiniFiles.open(vim.api.nvim_buf_get_name(0)) end)
 vim.api.nvim_create_user_command('S', 'PackerSync', {})
+vim.keymap.set('n', ';', function () vim.cmd('noh') end)
+
+vim.keymap.set('n', '<C-;>', function () require 'screenkey' .toggle() return '<C-;>' end)
 
 vim.keymap.set('n', '<leader>a', require 'harpoon.mark' .add_file)
 vim.keymap.set('n', '<leader>e', require 'harpoon.ui' .toggle_quick_menu)

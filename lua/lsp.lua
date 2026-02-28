@@ -17,8 +17,8 @@ local function LSP (use)
     vim.keymap.set('i', lhs, rhs, { expr = true })
   end
 
-  imap_expr('<Tab>',   [[pumvisible() ? "\<C-n>" : "\<Tab>"]])
-  imap_expr('<S-Tab>', [[pumvisible() ? "\<C-p>" : "\<S-Tab>"]])
+  imap_expr('<Tab>',   [[pumvisible() ? '\<C-n>' : '\<Tab>']])
+  imap_expr('<S-Tab>', [[pumvisible() ? '\<C-p>' : '\<S-Tab>']])
 
   local capabilities = MiniCompletion.get_lsp_capabilities()
 
@@ -30,8 +30,8 @@ local function LSP (use)
   vim.keymap.set('n', 'K',  vim.lsp.buf.hover)
 
   require 'mason-lspconfig' .setup { ensure_installed = {
-    "rust_analyzer",
-    "lua_ls", -- defined in after plugin
+    'rust_analyzer',
+    'lua_ls', -- defined in after plugin
   }, setup_handlers = {
     function (server_name)
       vim.lsp.config ( server_name, { capabilities = capabilities } )
