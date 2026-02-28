@@ -9,9 +9,27 @@ require 'packer' .startup(function(use)
   use 'nvim-tree/nvim-web-devicons'
   use 'theprimeagen/harpoon'
   use 'NStefan002/screenkey.nvim'
+  use 'folke/tokyonight.nvim'
+  use 'nvim-lualine/lualine.nvim'
+  use 'nvim-mini/mini.nvim'
+  use 'rachartier/tiny-inline-diagnostic.nvim'
+  use 'mason-org/mason.nvim'
+  use 'mason-org/mason-lspconfig.nvim'
+  use 'neovim/nvim-lspconfig'
+
+  use {'akinsho/toggleterm.nvim', tag = '*', config = function()
+    require 'toggleterm' .setup {
+      open_mapping = '<C-\'>',
+      direction = 'float',
+      start_in_insert = true,
+      float_opts = {border = 'curved', title_pos = 'center'},
+      hide_numbers = false,
+    }
+  end}
+
+  if packer_bootstrap then require('packer').sync() else
 
   -- colorscheme
-  use 'folke/tokyonight.nvim'
   local tokyonight = require 'tokyonight'
   tokyonight.setup {
     on_colors = function () end,
@@ -24,11 +42,10 @@ require 'packer' .startup(function(use)
   }
   tokyonight.load()
 
-  use 'nvim-lualine/lualine.nvim'
   require 'lualine_custom'
+  require 'lsp'
 
   -- mini
-  use 'nvim-mini/mini.nvim'
   require 'mini.ai' .setup()
   require 'mini.surround' .setup()
   require 'mini.clue' .setup()
@@ -42,19 +59,6 @@ require 'packer' .startup(function(use)
     ['`'] = false,
   }}
 
-  require 'lsp' .LSP(use)
-
-  use {'akinsho/toggleterm.nvim', tag = '*', config = function()
-    require 'toggleterm' .setup {
-      open_mapping = '<C-\'>',
-      direction = 'float',
-      start_in_insert = true,
-      float_opts = {border = 'curved', title_pos = 'center'},
-      hide_numbers = false,
-    }
-  end}
-
-  use 'rachartier/tiny-inline-diagnostic.nvim'
   require('tiny-inline-diagnostic').setup {
     options = {
       add_messages = { display_count = true, },
@@ -62,10 +66,7 @@ require 'packer' .startup(function(use)
     },
   }
   vim.diagnostic.config({ virtual_text = false })
-
-  -- automatically sync configuration on install
-  if packer_bootstrap then require('packer').sync() end
-end)
+end end)
 
 -- settings
 vim.g.mapleader = ' '
