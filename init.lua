@@ -98,6 +98,10 @@ vim.keymap.set('n', '<leader><S-u>', function () require 'harpoon.ui' .nav_file(
 vim.keymap.set('n', '<leader><S-i>', function () require 'harpoon.ui' .nav_file(5) end)
 vim.keymap.set('n', '<leader><S-o>', function () require 'harpoon.ui' .nav_file(6) end)
 
+-- Always go forward with n, backward with N
+vim.keymap.set('n', 'n', "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
+vim.keymap.set('n', 'N', "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
+
 vim.cmd [[
 nnoremap <silent> q: <Nop>
 nnoremap <silent> q? <Nop>
