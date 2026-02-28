@@ -34,8 +34,7 @@ require "packer" .startup(function(use)
   require 'mini.files' .setup()
   require 'mini.indentscope' .setup {symbol = '│'}
   require 'mini.icons' .setup()
-  require 'miniclue'
-  require 'mini.keymap'
+  require 'mini.splitjoin' .setup()
   require 'mini.pairs' .setup { mappings = {
     ['"'] = false,
     ["'"] = false,
@@ -93,5 +92,13 @@ vim.keymap.set('n', '<leader><S-e>', function () require 'harpoon.ui' .nav_file(
 vim.keymap.set('n', '<leader><S-u>', function () require 'harpoon.ui' .nav_file(4) end)
 vim.keymap.set('n', '<leader><S-i>', function () require 'harpoon.ui' .nav_file(5) end)
 vim.keymap.set('n', '<leader><S-o>', function () require 'harpoon.ui' .nav_file(6) end)
+
+vim.cmd [[
+nnoremap <silent> q: <Nop>
+nnoremap <silent> q? <Nop>
+nnoremap <silent> q/ <Nop>
+]]
+
+
 
 

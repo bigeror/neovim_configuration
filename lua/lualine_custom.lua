@@ -66,7 +66,7 @@ require('lualine').setup {
   sections = process_sections {
     lualine_a = { 'mode' },
     lualine_b = {
-      'branch',
+      -- 'branch',
       'diff',
       {
         'diagnostics',
@@ -82,29 +82,32 @@ require('lualine').setup {
       },
       { 'filename', file_status = false, path = 1 },
       { modified, color = { bg = colors.red } },
-      {
-        '%w',
-        cond = function()
-          return vim.wo.previewwindow
-        end,
-      },
-      {
-        '%r',
-        cond = function()
-          return vim.bo.readonly
-        end,
-      },
-      {
-        '%q',
-        cond = function()
-          return vim.bo.buftype == 'quickfix'
-        end,
-      },
+      -- {
+      --   '%w',
+      --   cond = function()
+      --     return vim.wo.previewwindow
+      --   end,
+      -- },
+      -- {
+      --   '%r',
+      --   cond = function()
+      --     return vim.bo.readonly
+      --   end,
+      -- },
+      -- {
+      --   '%q',
+      --   cond = function()
+      --     return vim.bo.buftype == 'quickfix'
+      --   end,
+      -- },
     },
     lualine_c = {},
     lualine_x = {},
     lualine_y = { search_result, 'filetype' },
-    lualine_z = { '%l:%c', '%p%%/%L' },
+    lualine_z = {
+      '%l:%c',
+      -- '%p%%/%L'
+    },
   },
   inactive_sections = {
     lualine_c = { '%f %y %m' },

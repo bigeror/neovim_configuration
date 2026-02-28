@@ -3,10 +3,8 @@ local function LSP (use)
   use 'mason-org/mason.nvim'
   use 'mason-org/mason-lspconfig.nvim'
   use 'neovim/nvim-lspconfig'
-  use 'folke/neodev.nvim'
 
-  require 'neodev' .setup()
-  require 'mason' .setup {ui = {keymaps = { install_package = "<Nop>" }}} -- disable imperative installation through UI
+  require 'mason' .setup()
   require 'mini.completion' .setup { delay = { completion = 0, info = 0, signature = 0 } }
 
   _G.cr_action = function()
@@ -33,31 +31,19 @@ local function LSP (use)
 
   require 'mason-lspconfig' .setup { ensure_installed = {
     "rust_analyzer",
-    "lua_ls",
+    "lua_ls", -- defined in after plugin
   }, setup_handlers = {
     function (server_name)
-      vim.lsp.config ( server_name,
-        { capabilities = capabilities } )
-    end,
-
-    ['lua_ls'] = function ()
-      local luasettings = {Lua = {
-        workspace = {checkThirdParty = false},
-        telemetry = {enable = false},
-        completion = {callSnippet = "Replace"},
-      }}
-      vim.lsp.config ( 'lua_ls', { settings = luasettings, capabilities = capabilities } )
+      vim.lsp.config ( server_name, { capabilities = capabilities } )
     end,
 
     ['rust_analyzer'] = function ()
       local rustsettings = {['rust-analyzer'] = { cargo = {allFeatures = true} }}
-      vim.lsp.config ( 'lua_ls', { settings = rustsettings, capabilities = capabilities } )
+      vim.lsp.config ( 'lua_ls', { settings = rustsettings, capabilities = capabilities })
     end,
   }}
 
-  local on_attach = function(args)
-    vim.bo[args.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
-  end
+  local on_attach = function(args) vim.bo[args.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp' end
   vim.api.nvim_create_autocmd('LspAttach', { callback = on_attach })
 end
 
