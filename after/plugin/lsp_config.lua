@@ -13,3 +13,7 @@ vim.lsp.config('lua_ls', {
     },
   },
 })
+
+local nixd_settings = { diagnostic = {suppress = {'sema-wscaping-with'}} }
+vim.lsp.config ( 'nixd', { settings = nixd_settings } )
+

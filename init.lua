@@ -16,6 +16,10 @@ require 'packer' .startup(function(use)
   use 'mason-org/mason.nvim'
   use 'mason-org/mason-lspconfig.nvim'
   use 'neovim/nvim-lspconfig'
+  use {
+    'wilfreddenton/history.nvim',
+    requires = { { 'nvim-lua/plenary.nvim' } }
+  }
 
   use {'akinsho/toggleterm.nvim', tag = '*', config = function()
     require 'toggleterm' .setup {
@@ -50,7 +54,7 @@ require 'packer' .startup(function(use)
   require 'mini.surround' .setup()
   require 'mini.clue' .setup()
   require 'mini.files' .setup()
-  require 'mini.indentscope' .setup {symbol = '│'}
+  -- require 'mini.indentscope' .setup {symbol = '│'}
   require 'mini.icons' .setup()
   require 'mini.splitjoin' .setup()
   require 'mini.pairs' .setup { mappings = {
@@ -58,6 +62,14 @@ require 'packer' .startup(function(use)
     ["'"] = false,
     ['`'] = false,
   }}
+
+  require('history').setup({
+    keybinds = {
+      back = '<Backspace>',
+      forward = '<S-Backspace>',
+      view = '<C-Backspace>'
+    }
+  })
 
   require('tiny-inline-diagnostic').setup {
     options = {
@@ -72,10 +84,14 @@ end end)
 vim.g.mapleader = ' '
 vim.cmd 'set nowrap'
 vim.o.clipboard = 'unnamedplus'
+vim.o.number = true
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
 vim.o.relativenumber = true
 vim.o.signcolumn = 'yes'
 vim.o.termguicolors = true
 vim.o.mouse = 'a'
+vim.o.list = true
 
 -- keybinds
 local telbuiltin = require 'telescope.builtin'
@@ -85,22 +101,29 @@ vim.keymap.set('n', '<leader>s', function() telbuiltin
 vim.keymap.set('n', '<leader>q', function () MiniFiles.open(vim.api.nvim_buf_get_name(0)) end)
 vim.api.nvim_create_user_command('S', 'PackerSync', {})
 vim.keymap.set('n', ';', function () vim.cmd('noh') end)
+vim.keymap.set('n', '<Esc>', function () vim.cmd('noh') end, {unique = false})
+
+vim.keymap.set("v", ">", ">gv")
+vim.keymap.set("v", "<", "<gv")
 
 vim.keymap.set('n', '<C-;>', function () require 'screenkey' .toggle() return '<C-;>' end)
 
 vim.keymap.set('n', '<leader>a', require 'harpoon.mark' .add_file)
 vim.keymap.set('n', '<leader>e', require 'harpoon.ui' .toggle_quick_menu)
 
-vim.keymap.set('n', '<leader><S-q>', function () require 'harpoon.ui' .nav_file(1) end)
-vim.keymap.set('n', '<leader><S-w>', function () require 'harpoon.ui' .nav_file(2) end)
-vim.keymap.set('n', '<leader><S-e>', function () require 'harpoon.ui' .nav_file(3) end)
-vim.keymap.set('n', '<leader><S-u>', function () require 'harpoon.ui' .nav_file(4) end)
-vim.keymap.set('n', '<leader><S-i>', function () require 'harpoon.ui' .nav_file(5) end)
-vim.keymap.set('n', '<leader><S-o>', function () require 'harpoon.ui' .nav_file(6) end)
+vim.keymap.set('n', '<leader>1', function () require 'harpoon.ui' .nav_file(1) end)
+vim.keymap.set('n', '<leader>2', function () require 'harpoon.ui' .nav_file(2) end)
+vim.keymap.set('n', '<leader>3', function () require 'harpoon.ui' .nav_file(3) end)
+vim.keymap.set('n', '<leader>7', function () require 'harpoon.ui' .nav_file(4) end)
+vim.keymap.set('n', '<leader>8', function () require 'harpoon.ui' .nav_file(5) end)
+vim.keymap.set('n', '<leader>9', function () require 'harpoon.ui' .nav_file(6) end)
 
 -- Always go forward with n, backward with N
 vim.keymap.set('n', 'n', "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
 vim.keymap.set('n', 'N', "'nN'[v:searchforward]", { expr = true, desc = "Prev search result" })
+
+-- substitution
+vim.keymap.set('n', '<C-s>', function () vim.cmd("%s//"..vim.fn.input("Replace > ").."/gc") end)
 
 vim.cmd [[
 nnoremap <silent> q: <Nop>
