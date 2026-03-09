@@ -74,6 +74,11 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
+  ["ccc.nvim"] = {
+    loaded = true,
+    path = "/home/bigeror/.local/share/nvim/site/pack/packer/start/ccc.nvim",
+    url = "https://github.com/uga-rosa/ccc.nvim"
+  },
   harpoon = {
     loaded = true,
     path = "/home/bigeror/.local/share/nvim/site/pack/packer/start/harpoon",

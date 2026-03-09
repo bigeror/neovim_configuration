@@ -16,10 +16,8 @@ require 'packer' .startup(function(use)
   use 'mason-org/mason.nvim'
   use 'mason-org/mason-lspconfig.nvim'
   use 'neovim/nvim-lspconfig'
-  use {
-    'wilfreddenton/history.nvim',
-    requires = { { 'nvim-lua/plenary.nvim' } }
-  }
+  use 'uga-rosa/ccc.nvim'
+  use { 'wilfreddenton/history.nvim', requires = { { 'nvim-lua/plenary.nvim' } } }
 
   use {'akinsho/toggleterm.nvim', tag = '*', config = function()
     require 'toggleterm' .setup {
@@ -36,7 +34,9 @@ require 'packer' .startup(function(use)
   -- colorscheme
   local tokyonight = require 'tokyonight'
   tokyonight.setup {
-    on_colors = function () end,
+    on_colors = function (colors)
+      colors.fg_gutter = "#445880"
+    end,
     on_highlights = function () end,
     transparent = true,
     styles = {
@@ -77,6 +77,14 @@ require 'packer' .startup(function(use)
       multilines = { enabled = true, },
     },
   }
+
+  require 'ccc' .setup {
+    highlighter = {
+      auto_enable = true,
+      lsp = true,
+    }
+  }
+
   vim.diagnostic.config({ virtual_text = false })
 end end)
 
@@ -99,6 +107,7 @@ vim.keymap.set('n', '<leader><leader>', telbuiltin.find_files)
 vim.keymap.set('n', '<leader>s', function() telbuiltin
   .grep_string({ search =  vim.fn.input('Grep > ') }) end)
 vim.keymap.set('n', '<leader>q', function () MiniFiles.open(vim.api.nvim_buf_get_name(0)) end)
+
 vim.api.nvim_create_user_command('S', 'PackerSync', {})
 vim.keymap.set('n', ';', function () vim.cmd('noh') end)
 vim.keymap.set('n', '<Esc>', function () vim.cmd('noh') end, {unique = false})
@@ -107,6 +116,7 @@ vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("v", "<", "<gv")
 
 vim.keymap.set('n', '<C-;>', function () require 'screenkey' .toggle() return '<C-;>' end)
+vim.keymap.set('n', '<leader>c', ':CccPick<CR>')
 
 vim.keymap.set('n', '<leader>a', require 'harpoon.mark' .add_file)
 vim.keymap.set('n', '<leader>e', require 'harpoon.ui' .toggle_quick_menu)

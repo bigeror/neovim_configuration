@@ -9,6 +9,27 @@ local colors = {
   green = bg_color,
 }
 
+local theme = {
+  normal = {
+    a = { fg = bg_color, bg = "#82aaff" },
+    b = { fg = "#82aaff", bg = "#3b4261" },
+    c = { fg = "#82aaff", bg = bg_color },
+    z = { fg = bg_color, bg = "#82aaff" },
+  },
+  insert = {
+    a = { fg = colors.black, bg = "#b8db87" },
+    b = { fg = "#b8db87", bg = "#3b4261" },
+  },
+  visual = {
+    a = { fg = colors.black, bg = "#c38bf7" },
+    b = { fg = "#c38bf7", bg = "#3b4261" },
+  },
+  replace = {
+    a = { fg = colors.black, bg = "#f7ca8b" },
+    b = { fg = "#f7ca8b", bg = "#3b4261" },
+  },
+}
+
 local empty = require('lualine.component'):extend()
 function empty:draw(default_highlight)
   self.status = ''
@@ -59,7 +80,7 @@ end
 
 require('lualine').setup {
   options = {
-    -- theme = theme,
+    theme = theme,
     component_separators = '',
     section_separators = { left = '', right = '' },
   },

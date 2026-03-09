@@ -1,3 +1,5 @@
+local capabilities = MiniCompletion.get_lsp_capabilities()
+
 vim.lsp.config('lua_ls', {
   settings = {
     Lua = {
@@ -13,7 +15,3 @@ vim.lsp.config('lua_ls', {
     },
   },
 })
-
-local nixd_settings = { diagnostic = {suppress = {'sema-wscaping-with'}} }
-vim.lsp.config ( 'nixd', { settings = nixd_settings } )
-
