@@ -49,8 +49,8 @@ local function save_profiles(threshold)
 end
 
 time([[Luarocks path setup]], true)
-local package_path_str = "/home/bigeror/.cache/nvim/packer_hererocks/2.1.1741730670/share/lua/5.1/?.lua;/home/bigeror/.cache/nvim/packer_hererocks/2.1.1741730670/share/lua/5.1/?/init.lua;/home/bigeror/.cache/nvim/packer_hererocks/2.1.1741730670/lib/luarocks/rocks-5.1/?.lua;/home/bigeror/.cache/nvim/packer_hererocks/2.1.1741730670/lib/luarocks/rocks-5.1/?/init.lua"
-local install_cpath_pattern = "/home/bigeror/.cache/nvim/packer_hererocks/2.1.1741730670/lib/lua/5.1/?.so"
+local package_path_str = "/home/bigeror/.cache/nvim/packer_hererocks/2.1.1784902473/share/lua/5.1/?.lua;/home/bigeror/.cache/nvim/packer_hererocks/2.1.1784902473/share/lua/5.1/?/init.lua;/home/bigeror/.cache/nvim/packer_hererocks/2.1.1784902473/lib/luarocks/rocks-5.1/?.lua;/home/bigeror/.cache/nvim/packer_hererocks/2.1.1784902473/lib/luarocks/rocks-5.1/?/init.lua"
+local install_cpath_pattern = "/home/bigeror/.cache/nvim/packer_hererocks/2.1.1784902473/lib/lua/5.1/?.so"
 if not string.find(package.path, package_path_str, 1, true) then
   package.path = package.path .. ';' .. package_path_str
 end
@@ -109,10 +109,30 @@ _G.packer_plugins = {
     path = "/home/bigeror/.local/share/nvim/site/pack/packer/start/mini.nvim",
     url = "https://github.com/nvim-mini/mini.nvim"
   },
+  ["multicursor.nvim"] = {
+    loaded = true,
+    path = "/home/bigeror/.local/share/nvim/site/pack/packer/start/multicursor.nvim",
+    url = "https://github.com/jake-stewart/multicursor.nvim"
+  },
   ["nvim-lspconfig"] = {
     loaded = true,
     path = "/home/bigeror/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
+  },
+  ["nvim-tree-pairs"] = {
+    loaded = true,
+    path = "/home/bigeror/.local/share/nvim/site/pack/packer/start/nvim-tree-pairs",
+    url = "https://github.com/yorickpeterse/nvim-tree-pairs"
+  },
+  ["nvim-treesitter"] = {
+    loaded = true,
+    path = "/home/bigeror/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
+    url = "https://github.com/nvim-treesitter/nvim-treesitter"
+  },
+  ["nvim-ufo"] = {
+    loaded = true,
+    path = "/home/bigeror/.local/share/nvim/site/pack/packer/start/nvim-ufo",
+    url = "https://github.com/kevinhwang91/nvim-ufo"
   },
   ["nvim-web-devicons"] = {
     loaded = true,
@@ -129,10 +149,10 @@ _G.packer_plugins = {
     path = "/home/bigeror/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
-  ["screenkey.nvim"] = {
+  ["promise-async"] = {
     loaded = true,
-    path = "/home/bigeror/.local/share/nvim/site/pack/packer/start/screenkey.nvim",
-    url = "https://github.com/NStefan002/screenkey.nvim"
+    path = "/home/bigeror/.local/share/nvim/site/pack/packer/start/promise-async",
+    url = "https://github.com/kevinhwang91/promise-async"
   },
   ["telescope.nvim"] = {
     loaded = true,
@@ -145,7 +165,7 @@ _G.packer_plugins = {
     url = "https://github.com/rachartier/tiny-inline-diagnostic.nvim"
   },
   ["toggleterm.nvim"] = {
-    config = { "\27LJ\2\nÂ\1\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\2B\0\2\1K\0\1\0\15float_opts\1\0\2\14title_pos\vcenter\vborder\vcurved\1\0\5\14direction\nfloat\17open_mapping\n<C-'>\17hide_numbers\1\15float_opts\0\20start_in_insert\2\nsetup\15toggleterm\frequire\0" },
+    config = { "\27LJ\2\nÂ\1\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\2B\0\2\1K\0\1\0\15float_opts\1\0\2\vborder\vcurved\14title_pos\vcenter\1\0\5\17open_mapping\n<C-'>\14direction\nfloat\17hide_numbers\1\15float_opts\0\20start_in_insert\2\nsetup\15toggleterm\frequire\0" },
     loaded = true,
     path = "/home/bigeror/.local/share/nvim/site/pack/packer/start/toggleterm.nvim",
     url = "https://github.com/akinsho/toggleterm.nvim"
@@ -165,7 +185,7 @@ _G.packer_plugins = {
 time([[Defining packer_plugins]], false)
 -- Config for: toggleterm.nvim
 time([[Config for toggleterm.nvim]], true)
-try_loadstring("\27LJ\2\nÂ\1\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\2B\0\2\1K\0\1\0\15float_opts\1\0\2\14title_pos\vcenter\vborder\vcurved\1\0\5\14direction\nfloat\17open_mapping\n<C-'>\17hide_numbers\1\15float_opts\0\20start_in_insert\2\nsetup\15toggleterm\frequire\0", "config", "toggleterm.nvim")
+try_loadstring("\27LJ\2\nÂ\1\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\2B\0\2\1K\0\1\0\15float_opts\1\0\2\vborder\vcurved\14title_pos\vcenter\1\0\5\17open_mapping\n<C-'>\14direction\nfloat\17hide_numbers\1\15float_opts\0\20start_in_insert\2\nsetup\15toggleterm\frequire\0", "config", "toggleterm.nvim")
 time([[Config for toggleterm.nvim]], false)
 
 _G._packer.inside_compile = false
