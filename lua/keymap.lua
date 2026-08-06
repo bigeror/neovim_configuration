@@ -141,3 +141,6 @@ vim.keymap.set('n', 'gi', vim.lsp.buf.implementation)
 vim.keymap.set('n', 'gR', require 'telescope.builtin'.lsp_references)
 vim.keymap.set('n', 'K',  vim.lsp.buf.hover)
 
+vim.api.nvim_create_user_command("New", function() vim.cmd([[
+  execute "new" | setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted nomodified
+]]) end, {})
