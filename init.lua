@@ -44,6 +44,8 @@ require 'packer' .startup(function(use)
   vim.o.foldlevelstart = 99
   vim.o.foldenable = true
 
+  vim.o.splitright = true
+
   require 'setup' -- setup most of the addons
   require 'lsp' -- setup lsps
   require 'lualine_custom' -- configure lualine to be fancy

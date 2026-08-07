@@ -7,7 +7,23 @@ vim.keymap.set('n', '<leader>q', function () MiniFiles.open(vim.api.nvim_buf_get
 
 vim.keymap.set('n', ';', function () vim.cmd('noh') end)
 vim.keymap.set('n', '<Esc>', function () vim.cmd('noh') end, {unique = false})
--- vim.keymap.set({'v', 'n'}, '*', "*N")
+
+vim.keymap.set('n', '*', function()
+  local word = vim.fn.expand('<cword>')
+  vim.fn.setreg('/', '\\<' .. word)
+  vim.opt.hlsearch = true
+end)
+
+vim.keymap.set('v', '*', function()
+  local words = require 'thirdparty' .get_visual_selection_text()
+  if words == nil then return end
+
+  local word = table.concat(words, '\\n')
+  print(word)
+  vim.fn.setreg('/', word)
+  vim.opt.hlsearch = true
+  vim.cmd('visual')
+end)
 
 vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("v", "<", "<gv")
@@ -30,20 +46,23 @@ vim.keymap.set('n', '<leader>4', function () require 'harpoon.ui' .nav_file(4) e
 vim.keymap.set('n', '<leader>5', function () require 'harpoon.ui' .nav_file(5) end)
 vim.keymap.set('n', '<leader>6', function () require 'harpoon.ui' .nav_file(6) end)
 
-vim.keymap.set('n', 'gw', '<C-w>w')
-vim.keymap.set('n', 'gq', '<C-w>q')
-vim.keymap.set('n', 'go', '<C-w>o')
-vim.keymap.set('n', 'gh', '<C-w>h')
-vim.keymap.set('n', 'gl', '<C-w>l')
-vim.keymap.set('n', 'gj', '<C-w>j')
-vim.keymap.set('n', 'gk', '<C-w>k')
-vim.keymap.set('n', 'gH', '<C-w>H')
-vim.keymap.set('n', 'gL', '<C-w>L')
-vim.keymap.set('n', 'gK', '<C-w>K')
-vim.keymap.set('n', 'gJ', '<C-w>J')
-vim.keymap.set('n', 'g|', '<C-w>|')
-vim.keymap.set('n', 'g_', '<C-w>_')
-vim.keymap.set('n', 'g=', '<C-w>=')
+-- use what you prefer
+vim.keymap.set('n', 'gw',  '<C-w>w')
+vim.keymap.set('n', 'gq',  '<C-w>q')
+vim.keymap.set('n', 'go',  '<C-w>o')
+vim.keymap.set('n', 'gh',  '<C-w>h')
+vim.keymap.set('n', 'gl',  '<C-w>l')
+vim.keymap.set('n', 'gj',  '<C-w>j')
+vim.keymap.set('n', 'gk',  '<C-w>k')
+vim.keymap.set('n', 'gH',  '<C-w>H')
+vim.keymap.set('n', 'gL',  '<C-w>L')
+vim.keymap.set('n', 'gK',  '<C-w>K')
+vim.keymap.set('n', 'gJ',  '<C-w>J')
+vim.keymap.set('n', 'g|',  '<C-w>|')
+vim.keymap.set('n', 'g\\', '<C-w>|')
+vim.keymap.set('n', 'g_',  '<C-w>_')
+vim.keymap.set('n', 'g-',  '<C-w>_')
+vim.keymap.set('n', 'g=',  '<C-w>=')
 
 -- Always go forward with n, backward with N
 vim.keymap.set('n', 'n', "'Nn'[v:searchforward]", { expr = true, desc = "Next search result" })
@@ -52,32 +71,31 @@ vim.keymap.set('n', 'N', "'nN'[v:searchforward]", { expr = true, desc = "Prev se
 -- substitution
 vim.keymap.set('n', '<C-s>', function () vim.cmd("%s//"..vim.fn.input("Replace > ").."/gc") end)
 
--- vim.cmd [[
--- nnoremap <silent> q: <Nop>
--- nnoremap <silent> q? <Nop>
--- nnoremap <silent> q/ <Nop>
--- ]]
+vim.keymap.set({'n'}, ':', function ()
+  vim.cmd('redir END')
+  vim.cmd('redir => g:command_output')
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(":", true, false, true), "n", false)
+end)
 
-local open_output_split = function (cmd)
+local open_output_split = function ()
   vim.cmd ([[
-    redir => s:command_output
-    silent execute ']]..cmd..[['
     redir END
-    if empty(s:command_output)
+    if exists('g:command_output')
+    if empty(g:command_output)
       echoerr "no output"
     else
-      new
+      vnew
       setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted nomodified
-      silent put=s:command_output
+      silent put=g:command_output
+    endif
     endif
   ]])
 end
 
-vim.keymap.set('n', '<C-;>', function () open_output_split(vim.fn.input('Command > ')) end)
+vim.keymap.set('n', '<C-;>', function () open_output_split() end)
 
 
 -- multicursors
--- if packer_plugins['multicursor.nvim'].loaded then
 local mc = require 'multicursor-nvim'
 if mc then
   local set = vim.keymap.set
@@ -127,12 +145,9 @@ if mc then
 end
 
 vim.keymap.set('i', '<CR>', 'v:lua.cr_action()', { expr = true })
-local imap_expr = function(lhs, rhs)
-  vim.keymap.set('i', lhs, rhs, { expr = true })
-end
 
-imap_expr('<Tab>',   [[pumvisible() ? '<C-n>' : '<Tab>']])
-imap_expr('<S-Tab>', [[pumvisible() ? '<C-p>' : '<S-Tab>']])
+vim.keymap.set('i', '<Tab>',   [[pumvisible() ? '<C-n>' : '<Tab>']],   { expr = true })
+vim.keymap.set('i', '<S-Tab>', [[pumvisible() ? '<C-p>' : '<S-Tab>']], { expr = true })
 
 vim.keymap.set('n', 'gr', vim.lsp.buf.rename)
 vim.keymap.set('n', 'ga', vim.lsp.buf.code_action)
@@ -141,6 +156,10 @@ vim.keymap.set('n', 'gi', vim.lsp.buf.implementation)
 vim.keymap.set('n', 'gR', require 'telescope.builtin'.lsp_references)
 vim.keymap.set('n', 'K',  vim.lsp.buf.hover)
 
+vim.keymap.set('n', 'gb', function() vim.cmd([[
+  execute "vnew" | setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted nomodified
+]]) end)
+
 vim.api.nvim_create_user_command("New", function() vim.cmd([[
-  execute "new" | setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted nomodified
+  execute "vnew" | setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted nomodified
 ]]) end, {})
