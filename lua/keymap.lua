@@ -22,7 +22,7 @@ vim.keymap.set('v', '*', function()
   print(word)
   vim.fn.setreg('/', word)
   vim.opt.hlsearch = true
-  vim.cmd('visual')
+  vim.cmd('normal \27')
 end)
 
 vim.keymap.set("v", ">", ">gv")
@@ -101,10 +101,10 @@ if mc then
   local set = vim.keymap.set
   set({"n", "x"}, "<C-k>", function() mc.lineAddCursor(-1) end)
   set({"n", "x"}, "<C-j>", function() mc.lineAddCursor(1) end)
-  set({"n", "x"}, "<leader>n", function() mc.searchAddCursor(1) end)
-  set({"n", "x"}, "<leader>s", function() mc.searchSkipCursor(1) end)
-  set({"n", "x"}, "<leader>N", function() mc.searchAddCursor(-1) end)
-  set({"n", "x"}, "<leader>S", function() mc.searchSkipCursor(-1) end)
+  set({"n", "x"}, "<C-n>", function() mc.searchAddCursor(1) end)
+  set({"n", "x"}, "<C-s>", function() mc.searchSkipCursor(1) end)
+  set({"n", "x"}, "<C-N>", function() mc.searchAddCursor(-1) end)
+  set({"n", "x"}, "<C-S>", function() mc.searchSkipCursor(-1) end)
 
   -- Add and remove cursors with control + left click.
   set("n", "<c-leftmouse>", mc.handleMouse)
@@ -155,6 +155,81 @@ vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
 vim.keymap.set('n', 'gi', vim.lsp.buf.implementation)
 vim.keymap.set('n', 'gR', require 'telescope.builtin'.lsp_references)
 vim.keymap.set('n', 'K',  vim.lsp.buf.hover)
+
+vim.opt.path:append("**")
+vim.keymap.set('v', 'gf', function ()
+  local words = require 'thirdparty' .get_visual_selection_text()
+  if words == nil then return end
+
+  local word = table.concat(words, '\\n')
+  local file_regex = vim.regex('\\(\\.\\?\\.\\?\\/\\)\\?\\%[\\w_-]\\+\\(\\/\\%[\\w_-]\\+\\)*\\(\\.\\%[\\w_-]\\+\\)\\(:\\d\\+\\)\\?\\>')
+  local file_start, file_end = file_regex:match_str(word)
+  if file_start == nil or file_end == nil then return end
+
+  local file = word:sub(file_start+1, file_end)
+  local ending_regex = vim.regex(':\\d\\+$')
+
+  local ending_start = ending_regex:match_str(file)
+  if ending_start then
+    file = file:sub(0, ending_start)
+  end
+
+  print(file)
+  if file:match("^%.?%.?/") then
+    vim.cmd('e '.. vim.fn.fnameescape(file))
+  else
+    local path = vim.fs.find(file, {
+      path = vim.uv.cwd(),
+      type = 'file',
+      limit = 1,
+    })
+
+    if path[1] then
+      print(path[1])
+      vim.cmd('e '.. vim.fn.fnameescape(path[1]))
+    end
+  end
+end)
+
+vim.keymap.set('v', 'gF', function ()
+  local words = require 'thirdparty' .get_visual_selection_text()
+  if words == nil then return end
+
+  local word = table.concat(words, '\\n')
+  local file_regex = vim.regex('\\(\\.\\?\\.\\?\\/\\)\\?\\%[\\w_-]\\+\\(\\/\\%[\\w_-]\\+\\)*\\(\\.\\%[\\w_-]\\+\\)\\(:\\d\\+\\)\\?\\>')
+  local file_start, file_end = file_regex:match_str(word)
+  if file_start == nil or file_end == nil then return end
+
+  local file = word:sub(file_start+1, file_end)
+  local ending_regex = vim.regex(':\\d\\+$')
+
+  local ending_start = ending_regex:match_str(file)
+  if ending_start == nil then
+    print('error:' .. file)
+    return
+  end
+
+  local ending = tonumber(file:sub(ending_start + 2, file:len()))
+  print(file:sub(0, ending_start) .. '; ' .. ending)
+  file = file:sub(0, ending_start)
+
+  if file:match("^%.?%.?/") then
+    vim.cmd('e '.. vim.fn.fnameescape(file))
+  else
+    local path = vim.fs.find(file, {
+      path = vim.uv.cwd(),
+      type = 'file',
+      limit = 1,
+    })
+
+    if path[1] then
+      print(path[1])
+      vim.cmd('e '.. vim.fn.fnameescape(path[1]))
+    end
+  end
+
+  vim.api.nvim_win_set_cursor(0, {ending, 0})
+end)
 
 vim.keymap.set('n', 'gb', function() vim.cmd([[
   execute "vnew" | setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted nomodified
