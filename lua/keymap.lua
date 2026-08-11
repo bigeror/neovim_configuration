@@ -25,6 +25,11 @@ vim.keymap.set('v', '*', function()
   vim.cmd('normal \27')
 end)
 
+vim.cmd [[
+nnoremap <silent> <C-N> <Nop>
+nnoremap <silent> <C-S> <Nop>
+]]
+
 vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("v", "<", "<gv")
 
@@ -101,10 +106,10 @@ if mc then
   local set = vim.keymap.set
   set({"n", "x"}, "<C-k>", function() mc.lineAddCursor(-1) end)
   set({"n", "x"}, "<C-j>", function() mc.lineAddCursor(1) end)
-  set({"n", "x"}, "<C-n>", function() mc.searchAddCursor(1) end)
-  set({"n", "x"}, "<C-s>", function() mc.searchSkipCursor(1) end)
-  set({"n", "x"}, "<C-N>", function() mc.searchAddCursor(-1) end)
-  set({"n", "x"}, "<C-S>", function() mc.searchSkipCursor(-1) end)
+  set({"n", "x"}, "<leader>n", function() mc.searchAddCursor(1) end)
+  set({"n", "x"}, "<leader>s", function() mc.searchSkipCursor(1) end)
+  set({"n", "x"}, "<leader>N", function() mc.searchAddCursor(-1) end)
+  set({"n", "x"}, "<leader>S", function() mc.searchSkipCursor(-1) end)
 
   -- Add and remove cursors with control + left click.
   set("n", "<c-leftmouse>", mc.handleMouse)
