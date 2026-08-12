@@ -66,3 +66,7 @@ require 'ccc' .setup {
 
 vim.diagnostic.config { virtual_text = false }
 
+require 'neogit' .setup {
+  kind = 'floating'
+}
+

@@ -243,3 +243,5 @@ vim.keymap.set('n', 'gb', function() vim.cmd([[
 vim.api.nvim_create_user_command("New", function() vim.cmd([[
   execute "vnew" | setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted nomodified
 ]]) end, {})
+
+vim.keymap.set('n', '<leader>g', '<cmd>Neogit<cr>')

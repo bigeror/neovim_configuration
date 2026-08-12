@@ -22,6 +22,8 @@ require 'packer' .startup(function(use)
   use   'yorickpeterse/nvim-tree-pairs'
   use { 'kevinhwang91/nvim-ufo'         , requires = 'kevinhwang91/promise-async'}
   use { 'akinsho/toggleterm.nvim'       , tag = '*'}
+  use   'sindrets/diffview.nvim'
+  use   'NeogitOrg/neogit'
 
   if packer_bootstrap then require('packer').sync() else
 
