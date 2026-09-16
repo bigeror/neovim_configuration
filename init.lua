@@ -55,6 +55,10 @@ require 'packer' .startup(function(use)
   require 'keymap' -- all the user defined keymaps
 end end)
 
+if not vim.tbl_islist then -- hotfix
+  vim.tbl_islist = vim.islist
+end
+
 -- When first install the config you must run :S/:PackerSync and restart neovim
 vim.api.nvim_create_user_command('S', 'PackerSync', {})
 
